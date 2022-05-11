@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'> 
+  <head>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music player</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  
+  
+    <meta content='IE=EmulateIE7' http-equiv='X-UA-Compatible'/> 
+    <b:if cond='data:blog.isMobile'> 
+      <meta content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0' name='viewport'/> 
+    <b:else/> 
+      <meta content='width=1100' name='viewport'/> 
+    </b:if> 
+    <b:include data='blog' name='all-head-content'/> 
+    <title><data:blog.pageTitle/></title>
+   <b:skin><![CDATA[/*
+-----------------------------------------------
+/////////// HTML THEME////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////TEMPLATE CREATED BY : Anand Khuman////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+----------------------------------------------
+]]></b:skin>
+    
+  <style type="text/css">
+  
+  :root {
+  --primary-color: #ec1f55;
+  --text-color: #333;
+  }
+  
+  * {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
+  }
+  
+  body {
+  background-color: #f5f5f5;
+  }
+  
+  html {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  }
+  
+  .player {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  }
+  
+  .player .icon-pause {
+  display: none;
+  }
+  
+  .player.playing .icon-pause {
+  display: inline-block;
+  }
+  
+  .player.playing .icon-play {
+  display: none;
+  }
+  
+  .dashboard {
+  padding: 16px 16px 14px;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 480px;
+  border-bottom: 1px solid #ebebeb;
+  }
+  
+  /* HEADER */
+  header {
+  text-align: center;
+  margin-bottom: 10px;
+  }
+  
+  header h3 {
+  color: var(--primary-color);
+  font-size: 12px;
+  }
+  header h2 {
+  color: var(--text-color);
+  font-size: 20px;
+  }
+  
+  /* CD */
+  .cd {
+  display: flex;
+  margin: auto;
+  width: 200px;
+  }
+  
+  .cd-thumb {
+  width: 100%;
+  padding-top: 100%;
+  border-radius: 50%;
+  background-color: #333;
+  background-size: cover;
+  margin: auto;
+  }
+  
+  /* CONTROL */
+  .control {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 18px 0 8px 0;
+  }
+  
+  .control .btn {
+  color: #666;
+  padding: 18px;
+  font-size: 18px;
+  }
+  
+  .control .btn.active {
+  color: var(--primary-color);
+  }
+  
+  .control .btn-toggle-play {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: 24px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  }
+  
+  .progress {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 6px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  }
+  .progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 6px;
+  background-color: var(--primary-color);
+  cursor: pointer;
+  }
+  
+  /* PLAYLIST */
+  .playlist {
+  margin-top: 408px;
+  padding: 12px;
+  }
+  
+  .song {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  background-color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .song.active {
+  background-color: var(--primary-color);
+  }
+  
+  .song:active {
+  opacity: 0.8;
+  }
+  
+  .song.active .option,
+  .song.active .author,
+  .song.active .title {
+  color: #fff;
+  }
+  
+  .song .thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-size: cover;
+  margin: 0 8px;
+  }
+  
+  .song .body {
+  flex: 1;
+  padding: 0 16px;
+  }
+  
+  .song .title {
+  font-size: 18px;
+  color: var(--text-color);
+  }
+  
+  .song .author {
+  font-size: 12px;
+  color: #999;
+  }
+  
+  .song .option {
+  padding: 16px 8px;
+  color: #999;
+  font-size: 18px;
+  }
+  
+  
+  
+  
+  
+  
+  </style>  
+    
+    
+    
+   
+  </head>
+  <body>
+   
+    
+    
+    
+
+<div class="player">
+
+  <!-- Dashboard -->
+
+  <div class="dashboard">
+
+    <!-- Header -->
+
+    <header>
+
+      <h3>Now playing</h3>
+
+      <h2>String 57th & 9th</h2>
+
+    </header>
+    
+    
+
+    <!-- CD -->
+
+    <div class="cd">
+
+      <div class="cd-thumb">
+
+      </div>
+
+    </div>
+    
+    <!-- Control -->
+
+    <div class="control">
+
+      <div class="btn btn-repeat">
+
+        <i class="fas fa-redo"></i>
+
+      </div>
+
+      <div class="btn btn-prev">
+
+        <i class="fas fa-step-backward"></i>
+
+      </div>
+
+      <div class="btn btn-toggle-play">
+
+        <i class="fas fa-pause icon-pause"></i>
+
+        <i class="fas fa-play icon-play"></i>
+
+      </div>
+
+      <div class="btn btn-next">
+
+        <i class="fas fa-step-forward"></i>
+
+      </div>
+
+      <div class="btn btn-random">
+
+        <i class="fas fa-random"></i>
+
+      </div>
+
+    </div>
+    <input id="progress" class="progress" type="range" value="0" step="1" min="0" >
+
+    <audio id="audio" src=""></audio>
+
+
+<marquee direction="left" scrollamount="6" loop="true" onmouseover="this.stop();"
+bgcolor="black" background-size="100%"> <span id="LblMar" style="color:white;font-weight:bold;">
+  
+  🙏🏻🙏🏻🙏🏻Play button and Image rolling wouldn't work when the Radio station is not working&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  🙏🏻🙏🏻🙏🏻Play button and Image rolling wouldn't work when the Radio station is not working 🙏🏻🙏🏻🙏🏻
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   This application is maintained by
+Admin : Anand khuman &nbsp;
+Address : Heirok part 2 maning leikai , Thoubal district , Manipur&nbsp;&nbsp;
+Contact no./Whatsapp no. :  +919325398641&nbsp;&nbsp;
+email :  anandkhuman143@gmail.com&nbsp;&nbsp;&nbsp;
+
+  
+
+
+▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀&nbsp;&nbsp;
+  
+Admin : Nongshaba mangang&nbsp;&nbsp;
+Address : Heirok part 2 maning leikai , Thoubal district , Manipur&nbsp;&nbsp;
+Contact no./Whatsapp no. : +918014522156&nbsp;&nbsp;
+email : nnongshaba@gmail.com&nbsp;&nbsp;
+  
+
+
+▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀&nbsp;&nbsp;&nbsp;
+  
+Official email
+email: contact@a2zmanipur.tech
+
+
+</span></marquee>
+
+
+
+  </div>
+  
+  
+
+    
+    <!-- Playlist -->
+
+  <div class="playlist">
+  
+  
+  
+  
+
+  </div>
+  
+  
+
+</div>
+    
+    
+    
+  <script type="text/javascript">
+  //<![CDATA[
+  
+  const $ = document.querySelector.bind(document);
+  const $$ = document.querySelectorAll.bind(document);
+  
+  const PlAYER_STORAGE_KEY = "F8_PLAYER";
+  
+  const player = $(".player");
+  const cd = $(".cd");
+  const heading = $("header h2");
+  const cdThumb = $(".cd-thumb");
+  const audio = $("#audio");
+  const playBtn = $(".btn-toggle-play");
+  const progress = $("#progress");
+  const prevBtn = $(".btn-prev");
+  const nextBtn = $(".btn-next");
+  const randomBtn = $(".btn-random");
+  const repeatBtn = $(".btn-repeat");
+  const playlist = $(".playlist");
+  
+  const app = {
+  currentIndex: 0,
+  isPlaying: false,
+  isRandom: false,
+  isRepeat: false,
+  config: {},
+  // (1/2) Uncomment the line below to use localStorage
+  // config: JSON.parse(localStorage.getItem(PlAYER_STORAGE_KEY)) || {},
+  songs: [
+  {
+      name: "Diamond Radio",
+      singer: "91.2 Mgz Fm Radio",
+      path: "https://khutsemlive.radioca.st/stream",
+      image: "https://blogger.googleusercontent.com/img/a/AVvXsEhYD81gqMiXZIOkTJQk9GDSURUrnncGa013xbqL2_UtCcFWY10ChevjUZ03vOu4znGdg05-mr63xyker00L9hRVBHENGqKdFialgRiwtkkMm1fSGzcVTUS9rjcstMF84SzEt8kO_7YHoSsF5Ud2VNwGzyQQYKyQvRAuwZQ_ssmsL47LpCkMMpDytwAfuw"
+  },
+  {
+      name: "Leichal Fm",
+      singer: "Leichal Fm 24x7",
+      path: "https://leichal24x7.radioca.st/streams/320kbps",
+      image:
+        "https://blogger.googleusercontent.com/img/a/AVvXsEiyIhrvLjn4jaC1wDwO5IDAC1pNeSOuOuFswD-SF6etJTGvFhTTKafrP7a6ZF5fW0GQiFUN-6gsr26cuuoENcrpbmuevz0Ix5GQahJU39YAEJoTFv9mp8l3BJkCquuyaSRtYbYmGQu3BkfcDLUNB7g7I0muKOja6EVF_QD2rDH6IXxxEv3RGVo4kIuNPg"
+  },
+    
+  { 
+      name:"Sangai Fm",
+      singer:"Air imphal",
+      path:"https://air.pc.cdn.bitgravity.com/air/live/pbaudio210/playlist.m3u8",
+      image:"https://liveradios.in/wp-content/uploads/air-impjhal-sangai.jpg",
+      
+    
+  },
+  
+  {
+      name:"Kangla Chanel",
+      singer:"air imphal",
+      path:"https://air.pc.cdn.bitgravity.com/air/live/pbaudio209/playlist.m3u8",
+      image:"https://1.bp.blogspot.com/-xSdq1osaK1Q/YBRGU4MNRcI/AAAAAAAAArA/SAXE3FlXU24_WQ3k0ewUKTqVR9NARRJVwCLcBGAsYHQ/w306-h166/KANGLA%2BLOGO.jpeg",
+  },
+  
+  {
+      name:"Citizens Radio",
+      singer:"voices of community",
+      path:"https://stream.zeno.fm/rr2my8sksp8uv",
+      image:"https://liveradios.in/wp-content/uploads/citizenradio.jpg",
+  },
+  
+  {
+      name:"Radio brisvaani",
+      singer:"Bollywood fm Radio",
+      path:"https://radioindia.net/radio/brisvani/icecast.audio",
+      image:"https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/72/a2/37/72a2372b-c206-69ec-81c3-f0f8c5948435/source/512x512bb.jpg",
+  },
+    
+  {
+      name:"Radio city",
+      singer:"Radio city",
+      path:"https://prclive4.listenon.in/",
+      image:"https://static.mytuner.mobi/media/radios-150px/vZNzLXx52E.png",
+  
+  },  
+    
+    
+    
+    ],
+    setConfig: function (key, value) {
+    this.config[key] = value;
+    // (2/2) Uncomment the line below to use localStorage
+    // localStorage.setItem(PlAYER_STORAGE_KEY, JSON.stringify(this.config));
+    },
+    render: function () {
+    const htmls = this.songs.map((song, index) => {
+    return `
+    <div class="song ${
+    index === this.currentIndex ? "active" : ""
+    }" data-index="${index}">
+    <div class="thumb"
+    style="background-image: url('${song.image}')">
+    </div>
+    <div class="body">
+    <h3 class="title">${song.name}</h3>
+    
+    <p class="author">${song.singer}</p>
+                           </div>
+                           <div class="option">
+                               <i class="fas fa-ellipsis-h"></i>
+                           </div>
+                       </div>
+                   `;
+        });
+        playlist.innerHTML = htmls.join("");
+      },
+      defineProperties: function () {
+        Object.defineProperty(this, "currentSong", {
+     get: function () {
+       return this.songs[this.currentIndex];
+     }
+        });
+      },
+      handleEvents: function () {
+        const _this = this;
+        const cdWidth = cd.offsetWidth;
+        // Xử lý CD quay / dừng
+        // Handle CD spins / stops
+        const cdThumbAnimate = cdThumb.animate([{ transform: "rotate(360deg)" }], {
+        duration: 10000, // 10 seconds
+        iterations: Infinity
+        });
+        cdThumbAnimate.pause();
+        
+     
+        // Handles CD enlargement / reduction
+        document.onscroll = function () {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const newCdWidth = cdWidth - scrollTop;
+        
+        cd.style.width = newCdWidth > 0 ? newCdWidth + "px" : 0;
+        cd.style.opacity = newCdWidth / cdWidth;
+        };
+        
+       
+        // Handle when click play
+        playBtn.onclick = function () {
+        if (_this.isPlaying) {
+        audio.pause();
+        } else {
+        audio.play();
+        }
+        };
+        
+      
+        // When the song is played
+        audio.onplay = function () {
+        _this.isPlaying = true;
+        player.classList.add("playing");
+        cdThumbAnimate.play();
+        };
+        
+        // When the song is pause
+        audio.onpause = function () {
+        _this.isPlaying = false;
+        player.classList.remove("playing");
+        cdThumbAnimate.pause();
+        };
+        
+   
+        // When the song progress changes
+        audio.ontimeupdate = function () {
+        if (audio.duration) {
+        const progressPercent = Math.floor(
+        (audio.currentTime / audio.duration) * 100
+        );
+        progress.value = progressPercent;
+        }
+        };
+        
+       
+        // Handling when seek
+        progress.onchange = function (e) {
+        const seekTime = (audio.duration / 100) * e.target.value;
+        audio.currentTime = seekTime;
+        };
+        
+      
+        // When next song
+        nextBtn.onclick = function () {
+        if (_this.isRandom) {
+        _this.playRandomSong();
+        } else {
+        _this.nextSong();
+        }
+        audio.play();
+        _this.render();
+        _this.scrollToActiveSong();
+        };
+        
+       
+        // When prev song
+        prevBtn.onclick = function () {
+        if (_this.isRandom) {
+        _this.playRandomSong();
+        } else {
+        _this.prevSong();
+        }
+        audio.play();
+        _this.render();
+        _this.scrollToActiveSong();
+        };
+        
+        
+        // Handling on / off random song
+        randomBtn.onclick = function (e) {
+        _this.isRandom = !_this.isRandom;
+        _this.setConfig("isRandom", _this.isRandom);
+        randomBtn.classList.toggle("active", _this.isRandom);
+        };
+        
+   
+        // Single-parallel repeat processing
+        repeatBtn.onclick = function (e) {
+        _this.isRepeat = !_this.isRepeat;
+        _this.setConfig("isRepeat", _this.isRepeat);
+        repeatBtn.classList.toggle("active", _this.isRepeat);
+        };
+   
+        // Handle next song when audio ended
+        audio.onended = function () {
+        if (_this.isRepeat) {
+        audio.play();
+        } else {
+        nextBtn.click();
+        }
+        };
+        
+       
+        // Listen to playlist clicks
+        playlist.onclick = function (e) {
+        const songNode = e.target.closest(".song:not(.active)");
+        
+        if (songNode || e.target.closest(".option")) {
+        
+        // Handle when clicking on the song
+        if (songNode) {
+        _this.currentIndex = Number(songNode.dataset.index);
+        _this.loadCurrentSong();
+        _this.render();
+        audio.play();
+        }
+        
+     
+        // Handle when clicking on the song option
+        if (e.target.closest(".option")) {
+        }
+        }
+        };
+        },
+        scrollToActiveSong: function () {
+        setTimeout(() => {
+        $(".song.active").scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+        });
+        }, 300);
+        },
+        loadCurrentSong: function () {
+        heading.textContent = this.currentSong.name;
+        cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`;
+        audio.src = this.currentSong.path;
+        },
+        loadConfig: function () {
+        this.isRandom = this.config.isRandom;
+        this.isRepeat = this.config.isRepeat;
+        },
+        nextSong: function () {
+        this.currentIndex++;
+        if (this.currentIndex >= this.songs.length) {
+        this.currentIndex = 0;
+        }
+        this.loadCurrentSong();
+        },
+        prevSong: function () {
+        this.currentIndex--;
+        if (this.currentIndex < 0) {
+        this.currentIndex = this.songs.length - 1;
+        }
+        this.loadCurrentSong();
+        },
+        playRandomSong: function () {
+        let newIndex;
+        do {
+        newIndex = Math.floor(Math.random() * this.songs.length);
+        } while (newIndex === this.currentIndex);
+        
+        this.currentIndex = newIndex;
+        this.loadCurrentSong();
+        },
+        start: function () {
+        // Gán cấu hình từ config vào ứng dụng
+        // Assign configuration from config to application
+        this.loadConfig();
+        // Định nghĩa các thuộc tính cho object
+        // Defines properties for the object
+        this.defineProperties();
+        
+        // Lắng nghe / xử lý các sự kiện (DOM events)
+        // Listening / handling events (DOM events)
+        this.handleEvents();
+        
+        // Tải thông tin bài hát đầu tiên vào UI khi chạy ứng dụng
+        // Load the first song information into the UI when running the app
+        this.loadCurrentSong();
+        
+        // Render playlist
+        this.render();
+        
+        // Hiển thị trạng thái ban đầu của button repeat & random
+        // Display the initial state of the repeat & random button
+        randomBtn.classList.toggle("active", this.isRandom);
+        repeatBtn.classList.toggle("active", this.isRepeat);
+        }
+        };
+        
+        app.start();
+        
+  
+  
+  
+  //]]>
+  </script> 
+    
+    
+    
+    
+    
+  </body> 
+</html>
